@@ -3,7 +3,7 @@ package it.epicode.libreria.autori;
 import lombok.Data;
 
 @Data
-public class AutoreResponse {
+public class Response {
     private Long id;
     private String nome;
     private String cognome;
