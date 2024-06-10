@@ -35,7 +35,31 @@ public class AutoreService {
         AutoreResponse autoreResponse = new AutoreResponse();
 
         BeanUtils.copyProperties(autore, autoreResponse);
+        autoreRepository.save(autore);
+        return autoreResponse;
+    }
+    // PUT
+    public AutoreResponse modify(Long id, AutoreRequest autoreRequest){
+        if(!autoreRepository.existsById(id)){
+            throw new EntityNotFoundException("Autore non trovato");
+        }
+        Autore autore = autoreRepository.findById(id).get();
+
+        BeanUtils.copyProperties(autoreRequest, autore);
+        autoreRepository.save(autore);
+        AutoreResponse autoreResponse = new AutoreResponse();
+        BeanUtils.copyProperties(autore, autoreResponse);
         return autoreResponse;
 
     }
+
+    //DELETE
+    public String delete(Long id){
+        if(!autoreRepository.existsById(id)){
+            throw  new EntityNotFoundException("Autore non trovato");
+        }
+        autoreRepository.deleteById(id);
+        return "Autore eliminato"; // nessun autore e' stato maltrattato
+    }
+
 }
