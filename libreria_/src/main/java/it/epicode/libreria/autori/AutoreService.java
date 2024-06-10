@@ -12,11 +12,11 @@ public class AutoreService {
 
     @Autowired
     private AutoreRepository autoreRepository;
-
+    // GET ALL
     public List<Autore> findAll(){
         return autoreRepository.findAll();
     }
-
+    // GET per ID
     public AutoreResponse findById(Long id){
         if(!autoreRepository.existsById(id)){
             throw new EntityNotFoundException("Autore non trovato");
@@ -27,7 +27,7 @@ public class AutoreService {
         BeanUtils.copyProperties(autore, autoreResponse); // sostiuisce il mapper con dipendenza di springboot
         return autoreResponse;
     }
-
+    // POST
     public AutoreResponse create(AutoreRequest autoreRequest){
         Autore autore = new Autore();
 
