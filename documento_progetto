@@ -1,0 +1,7 @@
+gestione libreria
+permette di registrare dei libri inserendo informazioni tipo l'autore e la casa editrice e la categoria
+
+Libro (id, titolo, autore, casa editrice, categoria)
+Autore (id, nome, cognome)
+CasaEditrice (id, nome, indirizzo, citta, cap)
+Categoria (id, descrizione)
