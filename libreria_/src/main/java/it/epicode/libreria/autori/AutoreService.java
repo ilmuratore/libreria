@@ -60,6 +60,7 @@ public class AutoreService {
         }
         autoreRepository.deleteById(id);
         return "Autore eliminato"; // nessun autore e' stato maltrattato
+
     }
 
 }
