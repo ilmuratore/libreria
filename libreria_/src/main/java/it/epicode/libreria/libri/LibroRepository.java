@@ -14,6 +14,6 @@ public interface LibroRepository extends JpaRepository<Libro, Long> {
 
     public List<Libro> findBySaga(Saga saga);
 
-    public boolean existByTitolo(String titolo);
+    public boolean existsByTitolo(String titolo);
 
 }

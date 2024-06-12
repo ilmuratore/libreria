@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,9 +22,13 @@ public class RegistroPrestito {
 
     private LocalDate dataPrestito;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Persona persona;
+    // Persona | RegistroPrestito | Many
+    // RegistroPrestito | Persona | One
 
-    @OneToMany
-    private List<RegistroPrestitoLibri> registroPrestitoLibriList;
+    @OneToMany(mappedBy = "libri_prestati", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
+    private List<RegistroPrestitoLibri> registroPrestitoLibriList = new ArrayList<>();
+    // RegistroPrestitoLibri | RegistroPrestito | One
+    // RegistroPrestito      | RegistroPrestitoLibri | Many
 }

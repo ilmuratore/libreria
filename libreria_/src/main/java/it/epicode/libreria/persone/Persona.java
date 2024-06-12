@@ -31,6 +31,9 @@ public class Persona {
     @Column(nullable = false)
     private String codiceFiscale;
 
-    @OneToMany(mappedBy = "persona")
+    @OneToMany(mappedBy = "persona", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<RegistroPrestito> prestiti;
+    // RegistroPrestito | Persona | One
+    // Persona          | RegistroPrestito | Many
+
 }

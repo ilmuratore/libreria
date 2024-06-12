@@ -43,4 +43,7 @@ public class Libro {
     @ToString.Exclude // serve ad escludere l'oggetto (saga) dal ToString del Libro, quindi se viene utilizzato un systemOut lo stesso non va in Loop.
     @JsonIgnoreProperties("libro")
     private Saga saga;
+
+    private boolean isAvailable = true;
+
 }

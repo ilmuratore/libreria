@@ -13,13 +13,16 @@ public class RegistroPrestitoLibri {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @OneToMany // ricordati di inserire la relazione nella entity
+    @ManyToOne
     private Libro libro;
+    // Libro      | RegistroPrestitoLibri  | Many
+    // RegistroPrestitoLibri | Libro       | One
 
     private boolean isRestituito = false;
 
     @ManyToOne
     private RegistroPrestito registroPrestito;
-
+    // RegistroPrestito | RegistroPrestitoLibri | Many
+    // RegistroPrestitoLibri | RegistroPrestiti | One
 
 }
