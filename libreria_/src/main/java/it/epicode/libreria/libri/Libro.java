@@ -23,11 +23,10 @@ public class Libro {
 
     private String titolo;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // Cascade PERSIST crea la sotto-entita' quando non presente, MERGE modifica la sotto-entity *vedi metodo bookAndAuthorModify nel serviceLibro.
     @ToString.Exclude // aggiungere sempre il ToString e il JsonProperties alla creazione di una entity relazionabile ad altra entity
     @JsonIgnoreProperties({"libri","id"}) // possibile sia att. con {"x"} per piu elementi, che singolo "x"
     // @JsonIgnore // elimina dalla response l'intera entity non molto utile in caso di relazioni bidirezionali preferibile approccio con DtoS
-
     private Autore autore;
 
     @ManyToOne

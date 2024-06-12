@@ -157,4 +157,82 @@ public class LibroService {
         repository.deleteById(id);
         return "Libro eliminato";
     }
+
+
+    // esempio di creazione di entity in entity
+    @Transactional
+    public Response createBookAndAuthor(Request bookRequest, it.epicode.libreria.autori.CompleteRequest authorRequest){
+        Autore autore;
+        if(!autoreRepository.existsById(authorRequest.getId())){
+            autore = new Autore();
+            autore.setNome(authorRequest.getNome());
+            autore.setCognome(authorRequest.getCognome());
+            autoreRepository.save(autore);
+        } else {
+            autore = autoreRepository.findById(authorRequest.getId()).get();
+        }
+        if(!casaEditriceRepository.existsById(bookRequest.getIdCasaEditrice())){
+            throw new EntityNotFoundException("Casa editrice not found");
+        }
+        CasaEditrice casaEditrice = casaEditriceRepository.findById(bookRequest.getIdCasaEditrice()).get();
+        if(!sagaRepository.existsById(bookRequest.getIdSaga())){
+            throw new EntityNotFoundException("Saga not found");
+        }
+        Saga saga = sagaRepository.findById(bookRequest.getIdSaga()).get();
+        Libro entity = new Libro();
+        entity.setAutore(autore);
+        entity.setCasaEditrice(casaEditrice);
+        entity.setSaga(saga);
+        entity.setCategorie(categoriaRepository.findAllById(bookRequest.getIdCategorie()));
+        BeanUtils.copyProperties(bookRequest, entity);
+        repository.save(entity);
+        Response response = new Response();
+        BeanUtils.copyProperties(entity, response);
+        return response;
+    }
+
+
+    // create *ATTENZIONE* funziona solo se presente proprieta' CASCADE alla tabella in relazione dell'entity
+
+    public Response creaLibriEautori(CreateBookAndAuthorRequest request){
+        Autore autore = new Autore();
+        BeanUtils.copyProperties(request, autore);
+        Libro entity = new Libro();
+        if(!casaEditriceRepository.existsById(request.getIdCasaEditrice())){
+            throw new EntityNotFoundException("Casa editrice not found");
+        }
+        CasaEditrice casaEditrice = casaEditriceRepository.findById(request.getIdCasaEditrice()).get();
+        if(!sagaRepository.existsById(request.getIdSaga())){
+            throw new EntityNotFoundException("Saga not found");
+        }
+        Saga saga = sagaRepository.findById(request.getIdSaga()).get();
+        BeanUtils.copyProperties(request, entity);
+        entity.setCategorie(categoriaRepository.findAllById(request.getIdCategorie()));
+        entity.setAutore(autore);
+        entity.setCasaEditrice(casaEditrice);
+        entity.setSaga(saga);
+        repository.save(entity);
+        Response response = new Response();
+        BeanUtils.copyProperties(response, entity);
+        return response;
+    }
+
+
+
+    // ESEMPIO *
+
+    public Response bookAndAuthorModify(Long id, ModifyBookAndAuthorRequest request){
+        if(!repository.existsById(id)){
+            throw new EntityNotFoundException("Libro not found");
+        }
+        Libro entity = repository.findById(id).get(); // grazie al MERGE bookAndAuthorModify
+        entity.setTitolo(request.getTitolo());
+        entity.getAutore().setNome(request.getNomeAutore()); // grazie alla relazione e' possibile richiamare direttamente il set per modificare il nome avendo gia' richiamato l'entity
+        repository.save(entity); // grazie alla proprieta' MERGE di CASCADE l'autore viene aggiornato in automatico
+        Response response = new Response();
+        BeanUtils.copyProperties(response, entity);
+        return response;
+
+
+    }
 }
