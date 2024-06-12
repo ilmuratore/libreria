@@ -3,6 +3,7 @@ package it.epicode.libreria.saga;
 import it.epicode.libreria.libri.Libro;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -20,5 +21,6 @@ public class Saga {
     private int numeroVolumi;
 
     @OneToMany(mappedBy = "saga")
+    @ToString.Exclude
     private List<Libro> libri;
 }

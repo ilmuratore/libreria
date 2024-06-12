@@ -1,7 +1,11 @@
 package it.epicode.libreria.autori;
 
+import it.epicode.libreria.libri.Libro;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -16,4 +20,8 @@ public class Autore {
     private String nome;
     @Column(length = 50)
     private String cognome;
+
+    @OneToMany(mappedBy = "autore")
+    @ToString.Exclude
+    private List<Libro> libri;
 }

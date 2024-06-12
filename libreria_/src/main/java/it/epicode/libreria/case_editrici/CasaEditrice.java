@@ -1,8 +1,12 @@
 package it.epicode.libreria.case_editrici;
 
 
+import it.epicode.libreria.libri.Libro;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -19,6 +23,10 @@ public class CasaEditrice {
     private String citta;
     @Column(length = 5)
     private String cap;
+
+    @OneToMany(mappedBy = "case_editrice")
+    @ToString.Exclude
+    private List<Libro> libro;
 
 
 }

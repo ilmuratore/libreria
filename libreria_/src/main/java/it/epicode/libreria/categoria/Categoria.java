@@ -1,8 +1,12 @@
 package it.epicode.libreria.categoria;
 
 
+import it.epicode.libreria.libri.Libro;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
+
+import java.util.List;
 
 @Entity
 @Table(name = "categorie")
@@ -15,4 +19,9 @@ public class Categoria {
 
     @Column(length = 50, unique = true)
     private String descrizione;
+
+    @OneToMany(mappedBy = "categorie")
+    @ToString.Exclude
+    private List<Libro> libro;
+
 }
