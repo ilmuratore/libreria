@@ -6,25 +6,29 @@ import it.epicode.libreria.case_editrici.CasaEditrice;
 import it.epicode.libreria.case_editrici.CasaEditriceRepository;
 import it.epicode.libreria.categoria.Categoria;
 import it.epicode.libreria.categoria.CategoriaRepository;
+import it.epicode.libreria.saga.Saga;
+import it.epicode.libreria.saga.SagaRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor // elimina la moltiplicazione delle autowired su piu dipendenze usando le variabili final
 public class LibroService {
 
-    @Autowired
-    LibroRepository repository;
-    @Autowired
-    CategoriaRepository categoriaRepository;
-    @Autowired
-    CasaEditriceRepository casaEditriceRepository;
-    @Autowired
-    AutoreRepository autoreRepository;
+    private final LibroRepository repository;
+    private final CategoriaRepository categoriaRepository;
+    private final CasaEditriceRepository casaEditriceRepository;
+    private final AutoreRepository autoreRepository;
+    private final SagaRepository sagaRepository;
+    // private final  + // nuova dependecyInjection
 
     //POST
     public Response create(Request request){
@@ -34,14 +38,19 @@ public class LibroService {
         if (!casaEditriceRepository.existsById(request.getIdCasaEditrice())){
             throw new EntityNotFoundException("Casa Editrice not found");
         }
+        if (!sagaRepository.existsById(request.getIdSaga())){
+            throw  new EntityNotFoundException("Saga not found");
+        }
         Libro entity = new Libro();
         BeanUtils.copyProperties(request, entity);
         Autore autore = autoreRepository.findById(request.getIdAutore()).get();
         CasaEditrice casaEditrice = casaEditriceRepository.findById(request.getIdCasaEditrice()).get();
         List<Categoria> categorie = categoriaRepository.findAllById(request.getIdCategorie());
+        Saga saga = sagaRepository.findById(request.getIdSaga()).get();
         entity.setAutore(autore);
         entity.setCasaEditrice(casaEditrice);
         entity.setCategorie(categorie);
+        entity.setSaga(saga);
         Response response = new Response();
         repository.save(entity);
         BeanUtils.copyProperties(entity, response);
@@ -57,6 +66,9 @@ public class LibroService {
         if(!casaEditriceRepository.existsById(request.getIdCasaEditrice())){
             throw  new EntityNotFoundException("Casa editrice not found");
         }
+        if(!sagaRepository.existsById(request.getIdSaga())){
+            throw new EntityNotFoundException("Saga not found");
+        }
         if(!repository.existsById(id)){
             throw new EntityNotFoundException("Libro not found");
         }
@@ -64,16 +76,18 @@ public class LibroService {
         Autore autore = autoreRepository.findById(request.getIdAutore()).get();
         CasaEditrice casaEditrice = casaEditriceRepository.findById(request.getIdCasaEditrice()).get();
         List<Categoria> categorie = categoriaRepository.findAllById(request.getIdCategorie());
+        Saga saga = sagaRepository.findById(request.getIdSaga()).get();
         BeanUtils.copyProperties(request, entity);
         entity.setAutore(autore);
         entity.setCasaEditrice(casaEditrice);
         entity.setCategorie(categorie);
+        entity.setSaga(saga);
         repository.save(entity);
         Response response = new Response();
         BeanUtils.copyProperties(entity, response);
         return response;
     }
-    // PUT con oggetto Optional
+    // PUT con oggetto Optional solo per Esempio
     public Response modify1(Long id, Request request){
         Optional<Autore> autore = autoreRepository.findById(request.getIdAutore());
         if(autore.isEmpty()){
@@ -98,8 +112,14 @@ public class LibroService {
         return response;
     }
 
-    //GET
-    public CompleteResponse FindById(Long id){
+    //GET (da commentare la findById)
+
+    public List<Libro> findAll(){
+        return repository.findAll();
+    }
+
+    @Transactional // annotazione che serve a mantenere la connessione attiva in caso di relazioni many nelle classi per eseguire le operazioni in un unica connessione in caso di errori nelle tabelle
+    public CompleteResponse findById(Long id){
         if(!repository.existsById(id)){
             throw new EntityNotFoundException("Libro not found");
         }
@@ -109,11 +129,32 @@ public class LibroService {
         completeResponse.setCategorie(entity.getCategorie());
         it.epicode.libreria.autori.Response autoreResponse = new it.epicode.libreria.autori.Response();
         BeanUtils.copyProperties(entity.getAutore(), autoreResponse);
-        it.epicode.libreria.case_editrici.Response casaEditriceResponse = new it.epicode.libreria.case_editrici.Response();
+        it.epicode.libreria.case_editrici.LightResponse casaEditriceResponse = new it.epicode.libreria.case_editrici.LightResponse();
         BeanUtils.copyProperties(entity.getCasaEditrice(), casaEditriceResponse);
+        it.epicode.libreria.saga.Response sagaResponse = new it.epicode.libreria.saga.Response();
+        BeanUtils.copyProperties(entity.getSaga(), sagaResponse);
         completeResponse.setAutore(autoreResponse);
         completeResponse.setCasaEditrice(casaEditriceResponse);
+        completeResponse.setSaga(sagaResponse);
         return completeResponse;
 
+    }
+
+    //GET con query nel Repository per recupero con attributi specifici classe/Dto
+    public List<Libro> findByAutore(Autore autore){
+        return repository.findByAutore(autore);
+    }
+
+    public List<Libro> findByCasaEditrice(CasaEditrice casaEditrice){
+        return repository.findByCasaEditrice(casaEditrice);
+    }
+
+    //DELETE
+    public String delete(Long id){
+        if(!repository.existsById(id)){
+            throw new EntityNotFoundException("Libro not found");
+        }
+        repository.deleteById(id);
+        return "Libro eliminato";
     }
 }

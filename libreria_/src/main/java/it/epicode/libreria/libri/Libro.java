@@ -4,6 +4,7 @@ package it.epicode.libreria.libri;
 import it.epicode.libreria.autori.Autore;
 import it.epicode.libreria.case_editrici.CasaEditrice;
 import it.epicode.libreria.categoria.Categoria;
+import it.epicode.libreria.saga.Saga;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -28,4 +29,7 @@ public class Libro {
 
     @ManyToMany
     private List<Categoria> categorie;
+
+    @ManyToOne
+    private Saga saga;
 }

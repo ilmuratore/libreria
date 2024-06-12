@@ -11,6 +11,6 @@ public class Request {
     private List<Long> idCategorie;
     private Long idAutore;
     private Long idCasaEditrice;
-
+    private Long idSaga;
 
 }
