@@ -23,7 +23,7 @@ public class AutoreController {
 
     // Metodo per ottenere tutti gli autori. Quando si effettua una richiesta GET a /api/autori, questo metodo viene chiamato e restituisce una lista di tutti gli autori.
     @GetMapping
-    public ResponseEntity<List<Autore>> findAll(){
+    public ResponseEntity<List<AutoreResponsePrj>> findAll(){
         return ResponseEntity.ok(service.findAll());
     }
 

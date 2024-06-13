@@ -1,22 +1,26 @@
 package it.epicode.libreria.autori;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
 @Service
+@Validated // permette le operazioni di validazione nel service
 public class AutoreService {
 
     @Autowired
     private AutoreRepository repository;
 
     // GET ALL
-    public List<Autore> findAll(){
+    public List<AutoreResponsePrj> findAll(){
         // Questo metodo restituisce tutti gli autori presenti nel database.
-        return repository.findAll();
+        return repository.findAllAutoreResponsePrj();
     }
 
     // GET per ID
@@ -33,8 +37,9 @@ public class AutoreService {
         return response;
     }
 
-    // POST
-    public Response create(Request request){
+    // POST * Aggiunta Validazione *
+    @Transactional
+    public Response create(@Valid Request request){ // annotazione @Valid controlla validazione dto's
         // Questo metodo crea un nuovo entity.
         // Le proprietà dell'entity vengono copiate da un oggetto AutoreRequest.
         Autore entity = new Autore();

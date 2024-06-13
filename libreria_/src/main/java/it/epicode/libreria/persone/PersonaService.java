@@ -3,22 +3,25 @@ package it.epicode.libreria.persone;
 
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
 @Service
+@Validated
 public class PersonaService {
 
     @Autowired
     private PersonaRepository repository;
 
     // GET ALL
-    public List<Persona> findAll(){
-        // Questo metodo restituisce tutti gli autori presenti nel database.
-        return repository.findAll();
+    public List<PersonaResponsePrj> findAll(){
+        // Questo metodo restituisce tutti gli autori presenti nel database utilizzando una repository Projection che restituisce un Dto
+        return repository.findAllPersonaResponsePrj();
     }
 
     // GET per ID
@@ -39,7 +42,7 @@ public class PersonaService {
 
 
     // POST
-    public Response create(Request request){
+    public Response create(@Valid Request request){
         if(repository.existsByCodiceFiscaleAndNomeAndCognome(request.getCodiceFiscale(), request.getNome(), request.getCognome())){
             throw new EntityExistsException("La persona esiste gia' ");
         }
@@ -52,7 +55,7 @@ public class PersonaService {
     }
 
     // PUT
-    public Response modify(Long id, Request request){
+    public Response modify(Long id, @Valid Request request){
         // Questo metodo modifica un entity esistente.
         // Prima verifica se l'entity esiste nel database. Se non esiste, viene generata un'eccezione.
         if(!repository.existsById(id)){

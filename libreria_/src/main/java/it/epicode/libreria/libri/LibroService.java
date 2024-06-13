@@ -12,8 +12,6 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,7 +28,7 @@ public class LibroService {
     private final SagaRepository sagaRepository;
     // private final  + // nuova dependecyInjection
 
-    //POST
+    //POSTGe
     public Response create(Request request){
         if (!autoreRepository.existsById(request.getIdAutore())){
             throw new EntityNotFoundException("Autore not found");
@@ -87,6 +85,7 @@ public class LibroService {
         BeanUtils.copyProperties(entity, response);
         return response;
     }
+
     // PUT con oggetto Optional solo per Esempio
     public Response modify1(Long id, Request request){
         Optional<Autore> autore = autoreRepository.findById(request.getIdAutore());
@@ -114,9 +113,10 @@ public class LibroService {
 
     //GET (da commentare la findById)
 
-    public List<Libro> findAll(){
-        return repository.findAll();
+    public List<LibroResponsePrj> findAll(){
+        return repository.findAllLibroResponsePrj();
     }
+
 
     @Transactional // annotazione che serve a mantenere la connessione attiva in caso di relazioni many nelle classi per eseguire le operazioni in un unica connessione in caso di errori nelle tabelle
     public CompleteResponse findById(Long id){

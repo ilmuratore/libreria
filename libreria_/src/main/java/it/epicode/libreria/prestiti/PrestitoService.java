@@ -20,6 +20,12 @@ public class PrestitoService {
     private final PersonaRepository personaRepository;
     private final LibroRepository libroRepository;
 
+    // Find all utilizzando il Projection Repository
+    public List<PrestitoResponsePrj> findAll(){
+        return prestitoRepository.findAllPrestitoResponsePrj();
+    }
+
+
 /*
 *  Il metodo `presta` per prima cosa verifica l'esistenza della `Persona`
 *  attraverso il metodo del repository `existsByCodiceFiscaleAndNomeAndCognome`
