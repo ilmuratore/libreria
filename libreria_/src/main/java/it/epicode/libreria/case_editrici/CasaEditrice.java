@@ -24,7 +24,7 @@ public class CasaEditrice {
     @Column(length = 5)
     private String cap;
 
-    @OneToMany(mappedBy = "case_editrice")
+    @OneToMany(mappedBy = "casaEditrice")
     @ToString.Exclude
     private List<Libro> libro;
 

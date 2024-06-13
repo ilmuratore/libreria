@@ -114,7 +114,7 @@ public class LibroService {
     //GET (da commentare la findById)
 
     public List<LibroResponsePrj> findAll(){
-        return repository.findAllLibroResponsePrj();
+        return repository.findAllBy();
     }
 
 

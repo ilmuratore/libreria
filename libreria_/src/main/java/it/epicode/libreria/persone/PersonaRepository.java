@@ -11,6 +11,6 @@ public interface PersonaRepository extends JpaRepository<Persona, Long> {
 
     //
 
-    public List<PersonaResponsePrj> findAllPersonaResponsePrj();
+    public List<PersonaResponsePrj> findAllBy();
 
 }

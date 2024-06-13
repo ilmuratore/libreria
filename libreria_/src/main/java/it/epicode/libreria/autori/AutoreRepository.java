@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface AutoreRepository extends JpaRepository<Autore, Long> {
 
-    public List<AutoreResponsePrj> findAllAutoreResponsePrj();
+    public List<AutoreResponsePrj> findAllBy();
 
     public List<Autore> findAllByNome(String nome);
 

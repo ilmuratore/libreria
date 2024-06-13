@@ -27,7 +27,7 @@ public class RegistroPrestito {
     // Persona | RegistroPrestito | Many
     // RegistroPrestito | Persona | One
 
-    @OneToMany(mappedBy = "libri_prestati", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
+    @OneToMany(mappedBy = "registroPrestito", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
     private List<RegistroPrestitoLibri> registroPrestitoLibriList = new ArrayList<>();
     // RegistroPrestitoLibri | RegistroPrestito | One
     // RegistroPrestito      | RegistroPrestitoLibri | Many

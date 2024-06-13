@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface RegistroPrestitoRepository extends JpaRepository<RegistroPrestito, Long> {
 
-    public List<PrestitoResponsePrj> findAllPrestitoResponsePrj();
+    public List<PrestitoResponsePrj> findAllBy();
 }

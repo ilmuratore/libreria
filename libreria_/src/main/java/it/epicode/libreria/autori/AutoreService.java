@@ -20,7 +20,7 @@ public class AutoreService {
     // GET ALL
     public List<AutoreResponsePrj> findAll(){
         // Questo metodo restituisce tutti gli autori presenti nel database.
-        return repository.findAllAutoreResponsePrj();
+        return repository.findAllBy();
     }
 
     // GET per ID

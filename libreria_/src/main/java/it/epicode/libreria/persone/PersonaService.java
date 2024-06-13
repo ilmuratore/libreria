@@ -21,7 +21,7 @@ public class PersonaService {
     // GET ALL
     public List<PersonaResponsePrj> findAll(){
         // Questo metodo restituisce tutti gli autori presenti nel database utilizzando una repository Projection che restituisce un Dto
-        return repository.findAllPersonaResponsePrj();
+        return repository.findAllBy();
     }
 
     // GET per ID

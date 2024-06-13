@@ -17,6 +17,6 @@ public interface LibroRepository extends JpaRepository<Libro, Long> {
     public boolean existsByTitolo(String titolo);
 
 
-    public List<LibroResponsePrj> findAllLibroResponsePrj();
+    public List<LibroResponsePrj> findAllBy();
 
 }

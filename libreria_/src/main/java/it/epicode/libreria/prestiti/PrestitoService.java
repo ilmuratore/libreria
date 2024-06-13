@@ -22,7 +22,7 @@ public class PrestitoService {
 
     // Find all utilizzando il Projection Repository
     public List<PrestitoResponsePrj> findAll(){
-        return prestitoRepository.findAllPrestitoResponsePrj();
+        return prestitoRepository.findAllBy();
     }
 
 
