@@ -28,7 +28,8 @@ public class LibroService {
     private final SagaRepository sagaRepository;
     // private final  + // nuova dependecyInjection
 
-    //POSTGe
+    //POST
+    @Transactional
     public Response create(Request request){
         if (!autoreRepository.existsById(request.getIdAutore())){
             throw new EntityNotFoundException("Autore not found");

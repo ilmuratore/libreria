@@ -1,6 +1,7 @@
 package it.epicode.libreria.case_editrici;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,7 @@ public class CasaEditriceService {
     }
 
     // POST
+    @Transactional
     public Response create(Request request){
         // Questo metodo crea un nuovo entity.
         // Le proprietà dell'entity vengono copiate da un oggetto CasaEditriceRequest.

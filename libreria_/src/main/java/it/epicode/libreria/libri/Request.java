@@ -1,10 +1,12 @@
 package it.epicode.libreria.libri;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 public class Request {
 
     private String titolo;

@@ -1,10 +1,12 @@
 package it.epicode.libreria.autori;
 
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 
 @Data
+@AllArgsConstructor
 public class Request {
 
     @NotEmpty(message = "Il nome non puo' essere vuoto")
