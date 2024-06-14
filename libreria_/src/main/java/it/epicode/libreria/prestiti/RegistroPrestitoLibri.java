@@ -1,5 +1,6 @@
 package it.epicode.libreria.prestiti;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import it.epicode.libreria.libri.Libro;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -14,6 +15,7 @@ public class RegistroPrestitoLibri {
     private Long id;
 
     @ManyToOne
+    @JsonIgnoreProperties({"autore", "casaEditrice", "categorie", "saga"})
     private Libro libro;
     // Libro      | RegistroPrestitoLibri  | Many
     // RegistroPrestitoLibri | Libro       | One

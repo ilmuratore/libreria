@@ -1,5 +1,6 @@
 package it.epicode.libreria.saga;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import it.epicode.libreria.libri.Libro;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -22,5 +23,6 @@ public class Saga {
 
     @OneToMany(mappedBy = "saga")
     @ToString.Exclude
+    @JsonIgnoreProperties("saga")
     private List<Libro> libri;
 }

@@ -4,6 +4,7 @@ import it.epicode.libreria.libri.Libro;
 import it.epicode.libreria.libri.LibroRepository;
 import it.epicode.libreria.persone.Persona;
 import it.epicode.libreria.persone.PersonaRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -48,16 +49,16 @@ public class PrestitoService {
 *  Alla fine creiamo la Response a cui passiamo id del prestito e numeri di libri prestati
 *
 * */
-
+    @Transactional
     public Response presta(CreatePrestitoRequest request){
         Persona entity;
         List<String> titoliLibriPrestati = new ArrayList<>();
         if(!personaRepository.existsByCodiceFiscaleAndNomeAndCognome(request.getCodiceFiscale(), request.getNome(), request.getCognome())){
             entity = new Persona();
             BeanUtils.copyProperties(request, entity);
-        } else{
-            entity = personaRepository.findByCodiceFiscaleAndNomeAndCognome(request.getCodiceFiscale(), request.getNome(), request.getCognome());
+            personaRepository.save(entity);
         }
+        entity = personaRepository.findByCodiceFiscaleAndNomeAndCognome(request.getCodiceFiscale(), request.getNome(), request.getCognome());
         RegistroPrestito prestito = new RegistroPrestito();
         prestito.setPersona(entity);
         prestito.setDataPrestito(LocalDate.now());
@@ -70,8 +71,14 @@ public class PrestitoService {
                 registroPrestitoLibri.setLibro(libro);
                 libro.setAvailable(false);
                 titoliLibriPrestati.add(libro.getTitolo());
-                prestito.getRegistroPrestitoLibriList().add(registroPrestitoLibri);
-
+                /*
+                   Non e' sufficiente aggiungere il libro al prestito ma e' necessario associare
+                   al libro prestato il prestito di riferimento
+                   *1,*2
+                 */
+                registroPrestitoLibri.setRegistroPrestito(prestito); //*1
+                prestito.getRegistroPrestitoLibriList().add(registroPrestitoLibri); //*2
+                System.out.println("Il libro prestato e' " + libro.getTitolo());
             }
         }
         prestitoRepository.save(prestito);
@@ -82,4 +89,15 @@ public class PrestitoService {
         return response;
     }
 
+
+    public List<RegistroPrestito> findAll1(){
+        return prestitoRepository.findAll();
+    }
+
+
+    public String delete(Long id){
+        prestitoRepository.deleteById(id);
+        return "Prestito eliminato";
+
+    }
 }

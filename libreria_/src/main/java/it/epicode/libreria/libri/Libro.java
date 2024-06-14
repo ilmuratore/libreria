@@ -41,7 +41,7 @@ public class Libro {
 
     @ManyToOne
     @ToString.Exclude // serve ad escludere l'oggetto (saga) dal ToString del Libro, quindi se viene utilizzato un systemOut lo stesso non va in Loop.
-    @JsonIgnoreProperties("libro")
+    @JsonIgnoreProperties("libri")
     private Saga saga;
 
     private boolean isAvailable = true;

@@ -3,6 +3,7 @@ package it.epicode.libreria.persone;
 
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ public class PersonaService {
 
 
     // POST
+    @Transactional
     public Response create(@Valid Request request){
         if(repository.existsByCodiceFiscaleAndNomeAndCognome(request.getCodiceFiscale(), request.getNome(), request.getCognome())){
             throw new EntityExistsException("La persona esiste gia' ");

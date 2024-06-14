@@ -10,6 +10,7 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "persone")
+
 public class Persona {
 
     @Id
@@ -31,7 +32,7 @@ public class Persona {
     @Column(nullable = false)
     private String codiceFiscale;
 
-    @OneToMany(mappedBy = "persona", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "persona")
     private List<RegistroPrestito> prestiti;
     // RegistroPrestito | Persona | One
     // Persona          | RegistroPrestito | Many
