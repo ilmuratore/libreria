@@ -73,13 +73,16 @@ public class UserService {
         if(usersRepository.existsByEmail(register.getEmail())){
             throw new EntityExistsException("Email gia' registrata");
         }
-        Roles roles;
+        Roles roles = rolesRepository.findById(Roles.ROLES_USER).get();
+        /*
         if(!rolesRepository.existsById(Roles.ROLES_USER)){
             roles = new Roles();
             roles.setRoleType(Roles.ROLES_USER);
         } else {
             roles = rolesRepository.findById(Roles.ROLES_USER).get();
         }
+
+         */
         User u = new User();
         BeanUtils.copyProperties(register, u);
         u.setPassword(encoder.encode(register.getPassword()));
