@@ -56,6 +56,7 @@ public class ApplicationSecurityConfig {
                 .authorizeHttpRequests(authorize ->
                         authorize //CONFIGURAZIONE DELLA PROTEZIONE DEI VARI ENDPOINT
                                 .requestMatchers("/users/login").permitAll()
+                                .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/users/registerAdmin").permitAll() // DA CANCELLARE DOPO AVER CREATO L'ADMIN
                                 .requestMatchers(HttpMethod.POST, "/users").permitAll() //ENDPOINT DI REGISTRAZIONE APERTO A TUTTI
                                 .requestMatchers(HttpMethod.GET, "/**").authenticated() //TUTTE GLI ENDPOINTS DI TIPO GET SONO RICHIAMABILI SOLO SE L'UTENTE E AUTENTICATO
