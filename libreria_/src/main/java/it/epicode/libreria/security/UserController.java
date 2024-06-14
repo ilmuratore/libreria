@@ -22,7 +22,6 @@ public class UserController {
         if (validator.hasErrors()) {
             throw new ApiValidationException(validator.getAllErrors());
         }
-
         var registeredUser = user.register(
                 RegisterUserDTO.builder()
                         .withFirstName(model.firstName())
@@ -41,5 +40,10 @@ public class UserController {
             throw  new ApiValidationException(validator.getAllErrors());
         }
         return new ResponseEntity<>(user.login(model.username(), model.password()).orElseThrow(), HttpStatus.OK);
+    }
+
+    @PostMapping("/registerAdmin")
+    public ResponseEntity<RegisteredUserDTO> registerAdmin(@RequestBody RegisterUserDTO registerUser){
+        return ResponseEntity.ok(user.registerAdmin(registerUser));
     }
 }

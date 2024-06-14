@@ -94,4 +94,24 @@ public class UserService {
         return response;
 
     }
+
+    public RegisteredUserDTO registerAdmin(RegisterUserDTO register){
+        if(usersRepository.existsByUsername(register.getUsername())){
+            throw new EntityExistsException("Utente gia' esistente");
+        }
+        if(usersRepository.existsByEmail(register.getEmail())){
+            throw new EntityExistsException("Email gia' registrata");
+        }
+        Roles roles = rolesRepository.findById(Roles.ROLES_ADMIN).get();
+        User u = new User();
+        BeanUtils.copyProperties(register, u);
+        u.setPassword(encoder.encode(register.getPassword()));
+        u.getRoles().add(roles);
+        usersRepository.save(u);
+        RegisteredUserDTO response = new RegisteredUserDTO();
+        BeanUtils.copyProperties(u, response);
+        response.setRoles(List.of(roles));
+        return response;
+
+    }
 }
